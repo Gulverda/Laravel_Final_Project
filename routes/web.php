@@ -24,3 +24,5 @@ Route::post('/logout', function () {
     Auth::logout();
     return redirect()->route('login');
 })->name('logout');
+
+Route::get('/send-test-notification', [PostController::class, 'sendTestNotification']);

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Posts</title>
-    <link rel="stylesheet" href="{{ asset('../css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body>
     <div class="container">
@@ -33,20 +33,27 @@
 
         <!-- Post creation form (visible only to logged-in users) -->
         @auth
-            <form action="{{ route('posts.store') }}" method="POST">
-                @csrf
-                <div>
-                    <label for="title">Title</label>
-                    <input type="text" name="title" id="title" required>
-                </div>
-                <div>
-                    <label for="content">Content</label>
-                    <textarea name="content" id="content" required></textarea>
-                </div>
-                <div>
-                    <button type="submit">Create Post</button>
-                </div>
-            </form>
+        <form action="{{ route('posts.store') }}" method="POST">
+    @csrf
+    <div>
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title" value="{{ old('title') }}" required>
+        @error('title')
+            <div style="color: red;">{{ $message }}</div>
+        @enderror
+    </div>
+    <div>
+        <label for="content">Content</label>
+        <textarea name="content" id="content" required>{{ old('content') }}</textarea>
+        @error('content')
+            <div style="color: red;">{{ $message }}</div>
+        @enderror
+    </div>
+    <div>
+        <button type="submit">Create Post</button>
+    </div>
+</form>
+
         @else
             <p>Please <a href="{{ route('login') }}">login</a> to create a post.</p>
         @endauth
