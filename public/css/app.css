@@ -1,0 +1,138 @@
+/* app.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f3f4f6;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.container {
+    width: 90%;
+    max-width: 800px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 28px;
+    text-align: center;
+    color: #4f46e5;
+    margin-bottom: 20px;
+}
+
+.post {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9fafb;
+    margin-top: 30px;
+}
+
+.post h2 {
+    font-size: 20px;
+    color: #1f2937;
+    margin: 0 0 10px 0;
+}
+
+.post p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #374151;
+}
+
+form {
+    margin-top: 20px;
+}
+
+form div {
+    margin-bottom: 15px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input[type="text"],
+textarea {
+    resize: none;
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background: #f9fafb;
+}
+
+textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #4f46e5;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #4338ca;
+}
+
+a {
+    color: #4f46e5;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+form[style="text-align: right;"] button,
+div[style="text-align: right;"] a {
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 14px;
+    color: #4f46e5;
+    background: #f3f4f6;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+form[style="text-align: right;"] button:hover,
+div[style="text-align: right;"] a:hover {
+    background: #e5e7eb;
+}
+
+p {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+p a {
+    font-weight: bold;
+    color: #4f46e5;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
