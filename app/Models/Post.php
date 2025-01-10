@@ -10,9 +10,15 @@ class Post extends Model
 
     protected $fillable = ['user_id', 'title', 'content'];
 
-    // რელაცია - ერთი მომხმარებელი ბევრ პოსტს ქმნის
+    // Relation - a post belongs to a user
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    // Relation - a post can have many tags
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
     }
 }

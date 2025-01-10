@@ -27,7 +27,7 @@ class PostTest extends TestCase
         ]);
 
         // Assert post creation
-        $response->assertStatus(200);
+        $response->assertStatus(201);  // Changed from 200 to 201
         $response->assertJson(['message' => 'Post created successfully!']);
 
         // Assert that a notification was sent to the user
