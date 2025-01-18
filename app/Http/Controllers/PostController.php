@@ -7,46 +7,28 @@ use App\Models\Tag;
 use Illuminate\Http\Request;
 use App\Notifications\PostCreated;
 use Illuminate\Support\Facades\Notification;
+use App\Http\Requests\PostRequest;  // Include the PostRequest
 
 class PostController extends Controller
 {
     // Show all posts
-    // public function index()
-    // {
-    //     // Retrieve posts with their tags
-    //     $posts = Post::with('tags')->get();
-    //     return view('posts.index', ['posts' => $posts]);
-    // }
+    public function index()
+    {
+        // Retrieve posts with their tags and the user who created them
+        $posts = Post::with('tags', 'user')->get();
 
-//     public function index()
-// {
-//     $posts = Post::with('tags', 'user')->get();
-//     return view('posts.index', compact('posts'));
-// }
+        // Retrieve all available tags
+        $tags = Tag::all();
 
-public function index()
-{
-    // Retrieve posts with their tags and the user who created them
-    $posts = Post::with('tags', 'user')->get();
-
-    // Retrieve all available tags
-    $tags = Tag::all();
-
-    // Pass both posts and tags to the view
-    return view('posts.index', compact('posts', 'tags'));
-}
-
+        // Pass both posts and tags to the view
+        return view('posts.index', compact('posts', 'tags'));
+    }
 
     // Store new post
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        // Validate incoming data
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'tags' => 'array', // Validate that 'tags' is an array
-            'tags.*' => 'exists:tags,id', // Validate that each tag exists in the 'tags' table
-        ]);
+        // Validate incoming data using PostRequest
+        $validated = $request->validated();
 
         // Get the authenticated user
         $user = auth()->user();
@@ -56,10 +38,13 @@ public function index()
             return response()->json(['error' => 'User not authenticated'], 401);
         }
 
+        // Ensure content is decoded if it was URL-encoded
+        $content = urldecode($validated['content']);
+
         // Create the new post
         $post = Post::create([
             'title' => $validated['title'],
-            'content' => $validated['content'],
+            'content' => $content,
             'user_id' => $user->id,
         ]);
 
@@ -86,15 +71,10 @@ public function index()
     }
 
     // Update a post and its tags
-    public function update(Request $request, $id)
+    public function update(PostRequest $request, $id)
     {
-        // Validate incoming data
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'tags' => 'array',
-            'tags.*' => 'exists:tags,id',
-        ]);
+        // Validate incoming data using PostRequest
+        $validated = $request->validated();
 
         // Find the post
         $post = Post::findOrFail($id);
@@ -102,7 +82,7 @@ public function index()
         // Update the post
         $post->update([
             'title' => $validated['title'],
-            'content' => $validated['content'],
+            'content' => urldecode($validated['content']), // Decode content if needed
         ]);
 
         // Sync the tags (detach existing and attach new)

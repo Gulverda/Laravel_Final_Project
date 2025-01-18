@@ -7,23 +7,14 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
-
     protected $routeMiddleware = [
-        'jwt.auth' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
-        // other middleware
-    ];
-    
-    /**
-     * დადგენილი კონსოლური ბრძანებები.
-     *
-     * @var array
-     */
-    protected $commands = [
-        // Add your custom commands here
+        'jwt.auth' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,  // Not needed anymore
+        'auth:sanctum' => \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,  // Add Sanctum middleware
+        // other middleware...
     ];
 
     /**
-     * სერვერის ციკლის დავალებები.
+     * The application's command schedule.
      *
      * @var array
      */
@@ -35,7 +26,7 @@ class Kernel extends ConsoleKernel
     }
 
     /**
-     * კონსოლური ბრძანებების გეგმის მარშრუტი.
+     * Register the commands for the application.
      *
      * @return void
      */
@@ -43,4 +34,17 @@ class Kernel extends ConsoleKernel
     {
         require base_path('routes/console.php');
     }
+
+    /**
+     * The application's route middleware.
+     *
+     * @var array
+     */
+    protected $middlewareGroups = [
+        'api' => [
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,  // Ensure stateful requests
+            'throttle:api',
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ],
+    ];
 }

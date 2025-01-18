@@ -1,61 +1,74 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\HasApiTokens;  // Ensure that we are using Sanctum
 
 class AuthController extends Controller
 {
-    // Handle login submission with JWT
-    public function login(Request $request)
+    // Show the login form
+    public function showLoginForm()
     {
-        // Validate the incoming request
-        $request->validate([
-            'email' => 'required|string|email|max:255',
-            'password' => 'required|string',
-        ]);
+        return view('auth.login');
+    }
 
+    // Handle login submission with Sanctum
+    public function login(LoginRequest $request)
+    {
         // Check if the credentials are valid
         $credentials = $request->only('email', 'password');
-
-        if (!$token = JWTAuth::attempt($credentials)) {
+    
+        if (Auth::attempt($credentials)) {
+            // Traditional login for web
+            return redirect()->intended('/posts');
+        }
+    
+        // For API authentication using Sanctum
+        $user = User::where('email', $request->email)->first();
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+    
+        // Generate Sanctum token
+        $token = $user->createToken('TestToken')->plainTextToken;
+    
+        return response()->json(['token' => $token]);
+    }
 
-        // Return the JWT token
-        return response()->json(compact('token'));
+    // Show the registration form
+    public function showRegisterForm()
+    {
+        return view('auth.register');
     }
 
     // Handle registration submission
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        // Validate the incoming request
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
         // Create the user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
-
-        // Generate JWT token after registration
-        $token = JWTAuth::fromUser($user);
-
-        // Return the JWT token
-        return response()->json(compact('token'), 201);
+    
+        // Log the user in traditionally
+        Auth::login($user);
+    
+        // Generate Sanctum token for API users
+        $token = $user->createToken('TestToken')->plainTextToken;
+    
+        // Return the token in the response
+        return response()->json(['token' => $token], 201);
     }
 
-    // Get the authenticated user's profile
+    // Get the authenticated user's profile (Sanctum-based)
     public function me()
     {
-        $user = JWTAuth::parseToken()->authenticate();
-        return response()->json($user);
+        return response()->json(auth()->user());
     }
 }

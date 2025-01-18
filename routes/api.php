@@ -1,22 +1,11 @@
 <?php
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\AuthController;  // <-- Add this line
 
-// Route to get the authenticated user's details
-Route::middleware('jwt.auth')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Registration and Login Routes
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
 
-// POST route for creating a post
-Route::post('posts', [PostController::class, 'store']);
-
-// GET route for fetching all posts
-Route::get('posts', [PostController::class, 'index']);
-
-// Protected routes using JWT
-Route::group(['middleware' => ['jwt.auth']], function () {
-    Route::get('user', [AuthController::class, 'me']);
-    // Add other protected routes here
-});
+// Authenticated Routes
+Route::middleware('auth:sanctum')->get('user', [AuthController::class, 'me']);
+Route::middleware('auth:sanctum')->post('/posts', [PostController::class, 'store']);
