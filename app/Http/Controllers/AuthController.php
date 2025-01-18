@@ -1,35 +1,31 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User; // To interact with the User model
+use App\Models\User;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // Show the login form
-    public function showLoginForm()
-    {
-        return view('auth.login');
-    }
-
-    // Handle login submission
+    // Handle login submission with JWT
     public function login(Request $request)
     {
+        // Validate the incoming request
+        $request->validate([
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string',
+        ]);
+
+        // Check if the credentials are valid
         $credentials = $request->only('email', 'password');
-        
-        if (Auth::attempt($credentials)) {
-            return redirect()->intended('/posts');
+
+        if (!$token = JWTAuth::attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return back()->with('error', 'Invalid credentials');
-    }
-
-    // Show the registration form
-    public function showRegisterForm()
-    {
-        return view('auth.register');  // Make sure this view exists
+        // Return the JWT token
+        return response()->json(compact('token'));
     }
 
     // Handle registration submission
@@ -49,10 +45,17 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        // Log the user in
-        Auth::login($user);
+        // Generate JWT token after registration
+        $token = JWTAuth::fromUser($user);
 
-        // Redirect to the posts page
-        return redirect()->route('posts.index');
+        // Return the JWT token
+        return response()->json(compact('token'), 201);
+    }
+
+    // Get the authenticated user's profile
+    public function me()
+    {
+        $user = JWTAuth::parseToken()->authenticate();
+        return response()->json($user);
     }
 }

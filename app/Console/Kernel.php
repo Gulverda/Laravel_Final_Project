@@ -7,6 +7,12 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+
+    protected $routeMiddleware = [
+        'jwt.auth' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
+        // other middleware
+    ];
+    
     /**
      * დადგენილი კონსოლური ბრძანებები.
      *
