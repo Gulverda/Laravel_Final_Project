@@ -29,7 +29,7 @@ class RegisterRequest extends FormRequest
             'name.required' => 'სახელი აუცილებელია.',
             'email.required' => 'მეილი აუცილებელია.',
             'email.email' => 'გთხოვთ, შეიყვანოთ ვალიდური მეილი.',
-            'email.unique' => 'ეს მეილი უკვე აღებულია.',
+            'email.unique' => 'ეს მეილი უკვე არსებობს.',
             'password.required' => 'პაროლი აუცილებელია.',
             'password.min' => 'პაროლი უნდა შეიცავდეს მინიმუმ 8 სიმბოლოს.',
             'password.confirmed' => 'პაროლის დადასტურება არ ემთხვევა.',
