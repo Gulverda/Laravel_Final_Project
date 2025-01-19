@@ -12,10 +12,13 @@
 
         <!-- Check if user is logged in -->
         @auth
-            <form action="{{ route('logout') }}" method="POST" style="text-align: right;">
-                @csrf
-                <button type="submit">Sign Out</button>
-            </form>
+            <div style="text-align: right;">
+                <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                    @csrf
+                    <button type="submit">Sign Out</button>
+                </form>
+                <a href="{{ route('profile.show', auth()->user()->id) }}" style="margin-left: 10px;">Profile</a>
+            </div>
         @else
             <div style="text-align: right;">
                 <a href="{{ route('login') }}">Login</a>
