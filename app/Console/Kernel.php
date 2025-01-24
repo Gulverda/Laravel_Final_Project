@@ -8,7 +8,6 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 class Kernel extends ConsoleKernel
 {
     protected $routeMiddleware = [
-        'jwt.auth' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,  // Not needed anymore
         'auth:sanctum' => \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,  // Add Sanctum middleware
         // other middleware...
     ];
@@ -47,4 +46,5 @@ class Kernel extends ConsoleKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
+    
 }

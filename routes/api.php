@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
 
 Route::prefix('api')->group(function () {
 
@@ -10,19 +11,15 @@ Route::prefix('api')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
 
+    // routes/api.php
+Route::post('/posts', [PostController::class, 'store']);
 
-    
-    // Authenticated Routes
-
-    // Route::middleware('auth:sanctum')->get('user', [AuthController::class, 'me']);
-    // Route::middleware('auth:sanctum')->post('/posts', [PostController::class, 'store']);
-
-
+    // Authenticated Routes (requires Sanctum token)
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('user', [AuthController::class, 'me']);
-        Route::post('/posts', [PostController::class, 'store']);
+        // Route::post(uri: 'posts', [PostController::class, 'store']); // Post creation
     });
 
-    // Public Profile Route
+    // Public Profile Route (no authentication required)
     Route::get('profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
 });
