@@ -11,13 +11,11 @@ Route::prefix('api')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
 
-    // routes/api.php
-Route::post('/posts', [PostController::class, 'store']);
-
+    
     // Authenticated Routes (requires Sanctum token)
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('user', [AuthController::class, 'me']);
-        // Route::post(uri: 'posts', [PostController::class, 'store']); // Post creation
+        Route::post('posts', [PostController::class, 'store']); // Post creation
     });
 
     // Public Profile Route (no authentication required)
