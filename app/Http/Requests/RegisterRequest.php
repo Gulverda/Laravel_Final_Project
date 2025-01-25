@@ -22,7 +22,6 @@ class RegisterRequest extends FormRequest
         ];
     }
 
-    // გამორჩეული შეცდომის შეტყობინებები
     public function messages()
     {
         return [

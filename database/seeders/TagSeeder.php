@@ -12,7 +12,6 @@ class TagSeeder extends Seeder
      */
     public function run()
     {
-        // Define an array of sample tags
         $tags = [
             'Technology',
             'Programming',
@@ -26,7 +25,6 @@ class TagSeeder extends Seeder
             'Database'
         ];
 
-        // Loop through the array and create each tag
         foreach ($tags as $tag) {
             Tag::create(['name' => $tag]);
         }

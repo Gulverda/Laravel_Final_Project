@@ -12,19 +12,18 @@ class PostTest extends TestCase
     /** @test */
     public function testPostCanBeCreated()
     {
-        $user = User::factory()->create(); // Create a user
-        $token = $user->createToken('TestToken')->plainTextToken; // Generate a token for the user
+        $user = User::factory()->create(); 
+        $token = $user->createToken('TestToken')->plainTextToken; 
     
-        // Ensure the request is sent to /api/posts, not /posts
         $response = $this->postJson('/api/posts', [
             'title' => 'Test Post',
             'content' => 'Test Content',
-            'tags' => [1, 2], // Tags should exist in the database
+            'tags' => [1, 2],
         ], [
             'Authorization' => 'Bearer ' . $token
         ]);
     
-        $response->assertStatus(201); // Expecting 201 Created
+        $response->assertStatus(201); 
         $response->assertJson(['message' => 'Post created successfully!']);
         $this->assertDatabaseHas('posts', ['title' => 'Test Post']);
     }

@@ -12,11 +12,11 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
-        // Create 50 posts
+        // Create 25 posts
         Post::factory(25)->create()->each(function ($post) {
             // Attach random tags to each post
-            $tags = Tag::inRandomOrder()->take(rand(1, 5))->pluck('id'); // Get 1 to 5 random tags
-            $post->tags()->attach($tags); // Attach the tags to the post
+            $tags = Tag::inRandomOrder()->take(rand(1, 5))->pluck('id');
+            $post->tags()->attach($tags);
         });
     }
 }

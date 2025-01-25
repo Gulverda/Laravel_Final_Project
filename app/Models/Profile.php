@@ -10,7 +10,7 @@ class Profile extends Model
 
     protected $fillable = ['user_id', 'bio', 'avatar']; 
 
-    // One-to-One ურთიერთობა - პროფილი ეკუთვნის ერთ მომხმარებელს
+    // One-to-One Relation - პროფილი ეკუთვნის ერთ მომხმარებელს
     public function user()
     {
         return $this->belongsTo(User::class);

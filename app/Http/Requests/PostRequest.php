@@ -19,11 +19,11 @@ class PostRequest extends FormRequest
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'tags' => 'nullable|array',
-            'tags.*' => 'exists:tags,id',
+            'tags.*' => 'required_with:tags|exists:tags,id',
         ];
     }
 
-    // ვალიდაციისთვის მომხმარებლისთვის შეტყობინებები
+    // მომხმარებლისთვის შეტყობინებები
     public function messages()
     {
         return [

@@ -7,7 +7,6 @@ use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Sanctum\HasApiTokens;  // Ensure that we are using Sanctum
 
 class AuthController extends Controller
 {

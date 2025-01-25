@@ -22,8 +22,8 @@ class User extends Authenticatable
     {
         static::created(function ($user) {
             $user->profile()->create([
-                'bio' => '',  // Default bio
-                'avatar' => '',  // Default avatar
+                'bio' => 'Welcome To Laravel',  
+                'avatar' => '',  
             ]);
         });
     }
